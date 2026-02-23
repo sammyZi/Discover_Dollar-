@@ -1,0 +1,47 @@
+# AWS Configuration
+# Copy this file to terraform.tfvars and update with your actual values
+# Note: terraform.tfvars is gitignored to prevent committing sensitive data
+
+# AWS region where resources will be created
+# Default: us-east-1 (Free Tier eligible)
+aws_region = "us-east-1"
+
+# EC2 instance type (must be Free Tier eligible)
+# Options: t2.micro (default), t3.micro
+instance_type = "t2.micro"
+
+# Path to your SSH public key file
+# Generate a key pair if you don't have one:
+#   ssh-keygen -t rsa -b 4096 -f ~/.ssh/meanapp-key
+# Then use the public key path:
+public_key_path = "~/.ssh/meanapp-key.pub"
+
+# CIDR block allowed for SSH access
+# For security, restrict to your IP address:
+#   ssh_cidr_block = "YOUR_IP_ADDRESS/32"
+# Or allow from anywhere (less secure):
+#   ssh_cidr_block = "0.0.0.0/0"
+ssh_cidr_block = "0.0.0.0/0"
+
+# Name tag for the EC2 instance
+instance_name = "meanapp-server"
+
+# Availability zone for the subnet
+# Must match the region (e.g., us-east-1a for us-east-1)
+availability_zone = "us-east-1a"
+
+# AWS Credentials Configuration
+# =============================
+# Terraform will use AWS credentials from one of these sources (in order):
+# 1. Environment variables: AWS_ACCESS_KEY_ID and AWS_SECRET_ACCESS_KEY
+# 2. AWS credentials file: ~/.aws/credentials
+# 3. IAM role (if running on EC2)
+#
+# To configure using environment variables:
+#   export AWS_ACCESS_KEY_ID="your_access_key"
+#   export AWS_SECRET_ACCESS_KEY="your_secret_key"
+#
+# To configure using AWS CLI:
+#   aws configure
+#
+# NEVER commit AWS credentials to version control!

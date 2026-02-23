@@ -1,0 +1,42 @@
+# Environment variables
+.env
+
+# Kiro configuration
+.kiro/
+
+# Terraform files
+terraform/terraform.tfstate
+terraform/terraform.tfstate.backup
+terraform/.terraform/
+terraform/.terraform.lock.hcl
+terraform/*.tfvars
+*.tfstate
+*.tfstate.*
+.terraform/
+*.tfvars
+
+# SSH keys
+*.pem
+*.key
+meanapp-key*
+
+# Node modules
+node_modules/
+
+# Build outputs
+dist/
+build/
+
+# Logs
+*.log
+npm-debug.log*
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# IDE files
+.vscode/
+.idea/
+*.swp
+*.swo
