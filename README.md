@@ -71,4 +71,4 @@ The CI/CD pipeline automatically triggers on:
 1. **Build**: Builds Docker images for frontend and backend, pushes to Docker Hub
 2. **Deploy**: Connects to EC2 via SSH, pulls latest images, restarts containers
 3. **Health Check**: Verifies the application is running correctly
-1
+2
