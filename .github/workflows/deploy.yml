@@ -58,11 +58,6 @@ jobs:
             docker-compose pull
             docker-compose down
             docker-compose up -d
+            sleep 30
             docker-compose ps
-      
-      - name: Wait for services to start
-        run: sleep 30
-      
-      - name: Health check
-        run: |
-          curl -f http://${{ secrets.EC2_HOST }}/ || exit 1
+            curl -f http://localhost/ || exit 1
