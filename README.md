@@ -5,15 +5,15 @@ A full-stack CRUD application built with the MEAN stack (MongoDB, Express, Angul
 ## 📹 Demo Video
 
 <div align="center">
-  <a href="https://drive.google.com/file/d/1yhvbeH7Z_pNd4TMMmrpUjrtxu4KGtAuw/view?usp=sharing">
-    <img src="https://drive.google.com/thumbnail?id=1yhvbeH7Z_pNd4TMMmrpUjrtxu4KGtAuw&sz=w1920" alt="Demo Video Thumbnail" style="width:100%; max-width:800px;">
-  </a>
+  <video src="https://github.com/user-attachments/assets/0a260e02-52ce-475c-b805-630f5d0d1b42" controls="controls" style="max-width: 100%;">
+  </video>
 </div>
 
 <p align="center">
-  <em>Complete demonstration of the application deployment, CI/CD pipeline, and features.</em><br>
-  <strong>Click the image above to watch the full video in highest quality.</strong>
+  <em>Complete demonstration of the application deployment, CI/CD pipeline, and features.</em>
 </p>
+
+> **Note**: Upload your video file (`screenshots/2026-02-24 13-57-07.mkv`) to a GitHub issue/comment to get the proper GitHub video URL, then replace the URL above.
 
 ## Table of Contents
 
