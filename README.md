@@ -833,75 +833,69 @@ crontab -e
 
 ### 1. GitHub Actions Workflow Configuration
 
-![GitHub Actions Workflow Configuration](screenshots/github-actions-workflow.png)
+![GitHub Actions Workflow Configuration](screenshots/2github_actions_deploy_ss.png)
 
-*Screenshot showing the GitHub Actions workflow file configuration in the repository.*
+*Screenshot showing the GitHub Actions workflow deployment configuration.*
 
-### 2. Successful CI/CD Pipeline Execution
+### 2. GitHub Actions - All Builds
 
-![Successful Pipeline Execution](screenshots/github-actions-success.png)
+![GitHub Actions All Builds](screenshots/github_action_all_builds.png)
+
+*Screenshot of GitHub Actions showing all workflow builds and their status.*
+
+### 3. GitHub Actions - Build Process
+
+![GitHub Actions Build Process](screenshots/github_action_build_ss.png)
+
+*Screenshot showing the GitHub Actions build job in progress.*
+
+### 4. Successful CI/CD Pipeline Execution
+
+![Successful Pipeline Execution](screenshots/github_action_success.png)
 
 *Screenshot of a successful GitHub Actions workflow run showing all jobs completed.*
 
-### 3. Docker Hub - Pushed Images
+### 5. Docker Hub - Pushed Images
 
-![Docker Hub Images](screenshots/docker-hub-images.png)
+![Docker Hub Images](screenshots/docker_hub_ss.png)
 
 *Screenshot of Docker Hub repository showing the frontend and backend images with tags.*
 
-### 4. Deployed Application UI
+### 6. AWS EC2 Instance
 
-![Application UI](screenshots/application-ui.png)
-
-*Screenshot of the deployed Angular application running in a browser.*
-
-### 5. Application - Tutorial List
-
-![Tutorial List](screenshots/tutorial-list.png)
-
-*Screenshot showing the list of tutorials in the application.*
-
-### 6. Application - Add Tutorial
-
-![Add Tutorial](screenshots/add-tutorial.png)
-
-*Screenshot of the add tutorial form.*
-
-### 7. Nginx Configuration
-
-![Nginx Configuration](screenshots/nginx-config.png)
-
-*Screenshot of the nginx.conf file showing reverse proxy configuration.*
-
-### 8. Docker Compose - Running Containers
-
-![Docker Compose PS](screenshots/docker-compose-ps.png)
-
-*Screenshot of `docker-compose ps` output showing all running containers.*
-
-### 9. AWS EC2 Instance
-
-![EC2 Instance](screenshots/ec2-instance.png)
+![EC2 Instance](screenshots/aws_instance.png)
 
 *Screenshot of AWS EC2 console showing the running instance.*
 
-### 10. AWS Security Group Rules
+### 7. AWS Security Group Rules
 
-![Security Group Rules](screenshots/security-group-rules.png)
+![Security Group Rules](screenshots/aws_security_grp.png)
 
 *Screenshot of AWS security group showing inbound rules for HTTP and SSH.*
 
-### 11. Docker Build Process
+### 8. Docker Compose - Running Containers
 
-![Docker Build](screenshots/docker-build.png)
+![Docker Compose PS](screenshots/aws_terminal_dockerPS.png)
 
-*Screenshot showing Docker image build process in terminal.*
+*Screenshot of terminal showing `docker-compose ps` output with all running containers.*
 
-### 12. Application Health Check
+### 9. Application - Tutorial List
 
-![Health Check](screenshots/health-check.png)
+![Tutorial List](screenshots/tutorial_list.png)
 
-*Screenshot showing successful health check response from the API.*
+*Screenshot showing the list of tutorials in the application.*
+
+### 10. Application - Tutorials List View
+
+![Tutorials List View](screenshots/tutorials_list.png)
+
+*Screenshot of the tutorials list view in the application interface.*
+
+### 11. Application - Tutorial Added
+
+![Tutorial Added](screenshots/tutorial_added.png)
+
+*Screenshot showing a successfully added tutorial in the application.*
 
 ## Troubleshooting
 
