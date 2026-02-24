@@ -14,7 +14,6 @@ A full-stack CRUD application built with the MEAN stack (MongoDB, Express, Angul
 - [CI/CD Pipeline Configuration](#cicd-pipeline-configuration)
 - [Deployment Instructions](#deployment-instructions)
 - [Environment Variables](#environment-variables)
-- [Database Backup and Restore](#database-backup-and-restore)
 - [Screenshots](#screenshots)
 - [Troubleshooting](#troubleshooting)
 
