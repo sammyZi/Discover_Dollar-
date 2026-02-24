@@ -4,11 +4,16 @@ A full-stack CRUD application built with the MEAN stack (MongoDB, Express, Angul
 
 ## 📹 Demo Video
 
-[![Watch Demo Video](https://img.shields.io/badge/▶️%20Watch-Demo%20Video-blue?style=for-the-badge&logo=googledrive)](https://drive.google.com/file/d/1yhvbeH7Z_pNd4TMMmrpUjrtxu4KGtAuw/preview?usp=sharing&quality=hd1080)
+<div align="center">
+  <a href="https://drive.google.com/file/d/1yhvbeH7Z_pNd4TMMmrpUjrtxu4KGtAuw/view?usp=sharing">
+    <img src="https://drive.google.com/thumbnail?id=1yhvbeH7Z_pNd4TMMmrpUjrtxu4KGtAuw&sz=w1920" alt="Demo Video Thumbnail" style="width:100%; max-width:800px;">
+  </a>
+</div>
 
-*Click above to watch the complete demonstration of the application deployment, CI/CD pipeline, and features in highest quality.*
-
-> **💡 Tip**: Click the settings gear icon in the video player and select the highest quality (1080p or higher) for best viewing experience.
+<p align="center">
+  <em>Complete demonstration of the application deployment, CI/CD pipeline, and features.</em><br>
+  <strong>Click the image above to watch the full video in highest quality.</strong>
+</p>
 
 ## Table of Contents
 
