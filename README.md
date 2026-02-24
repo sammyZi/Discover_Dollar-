@@ -413,6 +413,72 @@ Ensure your EC2 security group has the following inbound rules:
 
 The project uses GitHub Actions for automated CI/CD. The workflow is defined in `.github/workflows/deploy.yml`.
 
+```yaml
+name: Build and Deploy MEAN App
+
+on:
+  push:
+    branches:
+      - main
+      - master
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+      
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v2
+      
+      - name: Login to Docker Hub
+        uses: docker/login-action@v2
+        with:
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
+      
+      - name: Build and push frontend image
+        uses: docker/build-push-action@v4
+        with:
+          context: ./frontend
+          push: true
+          tags: |
+            ${{ secrets.DOCKER_USERNAME }}/meanapp-frontend:latest
+            ${{ secrets.DOCKER_USERNAME }}/meanapp-frontend:${{ github.sha }}
+      
+      - name: Build and push backend image
+        uses: docker/build-push-action@v4
+        with:
+          context: ./backend
+          push: true
+          tags: |
+            ${{ secrets.DOCKER_USERNAME }}/meanapp-backend:latest
+            ${{ secrets.DOCKER_USERNAME }}/meanapp-backend:${{ github.sha }}
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Deploy to EC2
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.EC2_HOST }}
+          username: ubuntu
+          key: ${{ secrets.EC2_SSH_KEY }}
+          script: |
+            cd /home/ubuntu/meanapp
+            docker-compose pull
+            docker-compose down
+            docker-compose up -d
+            sleep 30
+            docker-compose ps
+            curl -f http://localhost/ || exit 1
+```
+
 ### Pipeline Stages
 
 ```mermaid
@@ -679,219 +745,63 @@ PORT=3000
 API_URL=http://your-ec2-ip/api
 ```
 
-## Database Backup and Restore
-
-### Backup MongoDB Data
-
-#### Simple Backup to Local Directory
-
-```bash
-# Backup to container's /data/backup directory
-docker-compose exec mongodb mongodump \
-  --username=$MONGO_USERNAME \
-  --password=$MONGO_PASSWORD \
-  --authenticationDatabase=admin \
-  --db=$MONGO_DATABASE \
-  --out=/data/backup
-
-# Copy backup from container to host
-docker cp meanapp-mongodb:/data/backup ./mongodb-backup-$(date +%Y%m%d)
-```
-
-#### Compressed Backup (Recommended)
-
-```bash
-# Create compressed backup archive
-docker-compose exec mongodb mongodump \
-  --username=$MONGO_USERNAME \
-  --password=$MONGO_PASSWORD \
-  --authenticationDatabase=admin \
-  --db=$MONGO_DATABASE \
-  --archive=/data/backup.archive.gz \
-  --gzip
-
-# Copy compressed backup to host
-docker cp meanapp-mongodb:/data/backup.archive.gz ./mongodb-backup-$(date +%Y%m%d).archive.gz
-```
-
-#### Backup Specific Collection
-
-```bash
-# Backup only the 'tutorials' collection
-docker-compose exec mongodb mongodump \
-  --username=$MONGO_USERNAME \
-  --password=$MONGO_PASSWORD \
-  --authenticationDatabase=admin \
-  --db=$MONGO_DATABASE \
-  --collection=tutorials \
-  --archive=/data/tutorials-backup.archive.gz \
-  --gzip
-
-docker cp meanapp-mongodb:/data/tutorials-backup.archive.gz ./tutorials-backup-$(date +%Y%m%d).archive.gz
-```
-
-### Restore MongoDB Data
-
-#### Restore from Directory Backup
-
-```bash
-# Copy backup to container
-docker cp ./mongodb-backup-20240115 meanapp-mongodb:/data/restore
-
-# Restore the backup
-docker-compose exec mongodb mongorestore \
-  --username=$MONGO_USERNAME \
-  --password=$MONGO_PASSWORD \
-  --authenticationDatabase=admin \
-  --db=$MONGO_DATABASE \
-  /data/restore/$MONGO_DATABASE
-```
-
-#### Restore from Compressed Archive
-
-```bash
-# Copy compressed backup to container
-docker cp ./mongodb-backup-20240115.archive.gz meanapp-mongodb:/data/restore.archive.gz
-
-# Restore from archive
-docker-compose exec mongodb mongorestore \
-  --username=$MONGO_USERNAME \
-  --password=$MONGO_PASSWORD \
-  --authenticationDatabase=admin \
-  --archive=/data/restore.archive.gz \
-  --gzip
-```
-
-#### Restore and Drop Existing Data
-
-```bash
-# WARNING: This will delete existing data before restoring
-docker-compose exec mongodb mongorestore \
-  --username=$MONGO_USERNAME \
-  --password=$MONGO_PASSWORD \
-  --authenticationDatabase=admin \
-  --archive=/data/restore.archive.gz \
-  --gzip \
-  --drop
-```
-
-### Automated Backup Script
-
-Create a script for regular backups:
-
-```bash
-#!/bin/bash
-# backup-mongodb.sh
-
-BACKUP_DIR="./backups"
-DATE=$(date +%Y%m%d_%H%M%S)
-BACKUP_FILE="mongodb-backup-$DATE.archive.gz"
-
-# Create backup directory if it doesn't exist
-mkdir -p $BACKUP_DIR
-
-# Create backup
-docker-compose exec -T mongodb mongodump \
-  --username=$MONGO_USERNAME \
-  --password=$MONGO_PASSWORD \
-  --authenticationDatabase=admin \
-  --db=$MONGO_DATABASE \
-  --archive \
-  --gzip > "$BACKUP_DIR/$BACKUP_FILE"
-
-echo "Backup completed: $BACKUP_DIR/$BACKUP_FILE"
-
-# Keep only last 7 backups
-ls -t $BACKUP_DIR/mongodb-backup-*.archive.gz | tail -n +8 | xargs -r rm
-
-echo "Old backups cleaned up. Keeping last 7 backups."
-```
-
-Make it executable and run:
-
-```bash
-chmod +x backup-mongodb.sh
-./backup-mongodb.sh
-```
-
-### Schedule Automated Backups (Cron)
-
-On your EC2 instance:
-
-```bash
-# Edit crontab
-crontab -e
-
-# Add daily backup at 2 AM
-0 2 * * * cd /home/ubuntu/meanapp && ./backup-mongodb.sh >> /home/ubuntu/backup.log 2>&1
-
-# Add weekly backup on Sunday at 3 AM
-0 3 * * 0 cd /home/ubuntu/meanapp && ./backup-mongodb.sh >> /home/ubuntu/backup.log 2>&1
-```
-
 ## Screenshots
 
-### 1. GitHub Actions Workflow Configuration
-
-![GitHub Actions Workflow Configuration](screenshots/2github_actions_deploy_ss.png)
-
-*Screenshot showing the GitHub Actions workflow deployment configuration.*
-
-### 2. GitHub Actions - All Builds
+### 1. GitHub Actions - All Builds
 
 ![GitHub Actions All Builds](screenshots/github_action_all_builds.png)
 
 *Screenshot of GitHub Actions showing all workflow builds and their status.*
 
-### 3. GitHub Actions - Build Process
+### 2. GitHub Actions - Build Process
 
 ![GitHub Actions Build Process](screenshots/github_action_build_ss.png)
 
 *Screenshot showing the GitHub Actions build job in progress.*
 
-### 4. Successful CI/CD Pipeline Execution
+### 3. Successful CI/CD Pipeline Execution
 
 ![Successful Pipeline Execution](screenshots/github_action_success.png)
 
 *Screenshot of a successful GitHub Actions workflow run showing all jobs completed.*
 
-### 5. Docker Hub - Pushed Images
+### 4. Docker Hub - Pushed Images
 
 ![Docker Hub Images](screenshots/docker_hub_ss.png)
 
 *Screenshot of Docker Hub repository showing the frontend and backend images with tags.*
 
-### 6. AWS EC2 Instance
+### 5. AWS EC2 Instance
 
 ![EC2 Instance](screenshots/aws_instance.png)
 
 *Screenshot of AWS EC2 console showing the running instance.*
 
-### 7. AWS Security Group Rules
+### 6. AWS Security Group Rules
 
 ![Security Group Rules](screenshots/aws_security_grp.png)
 
 *Screenshot of AWS security group showing inbound rules for HTTP and SSH.*
 
-### 8. Docker Compose - Running Containers
+### 7. Docker Compose - Running Containers
 
 ![Docker Compose PS](screenshots/aws_terminal_dockerPS.png)
 
 *Screenshot of terminal showing `docker-compose ps` output with all running containers.*
 
-### 9. Application - Tutorial List
+### 8. Application - Tutorial List
 
 ![Tutorial List](screenshots/tutorial_list.png)
 
 *Screenshot showing the list of tutorials in the application.*
 
-### 10. Application - Tutorials List View
+### 9. Application - Tutorials List View
 
 ![Tutorials List View](screenshots/tutorials_list.png)
 
 *Screenshot of the tutorials list view in the application interface.*
 
-### 11. Application - Tutorial Added
+### 10. Application - Tutorial Added
 
 ![Tutorial Added](screenshots/tutorial_added.png)
 
