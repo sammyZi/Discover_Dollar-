@@ -4,16 +4,8 @@
 # Kiro configuration
 .kiro/
 
-# Terraform files
-terraform/terraform.tfstate
-terraform/terraform.tfstate.backup
-terraform/.terraform/
-terraform/.terraform.lock.hcl
-terraform/*.tfvars
-*.tfstate
-*.tfstate.*
-.terraform/
-*.tfvars
+# Terraform - ignore entire directory
+terraform/
 
 # SSH keys
 *.pem
