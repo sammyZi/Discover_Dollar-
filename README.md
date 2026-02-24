@@ -2,6 +2,14 @@
 
 A full-stack CRUD application built with the MEAN stack (MongoDB, Express, Angular 15, and Node.js), containerized with Docker and deployed to AWS EC2 with automated CI/CD pipeline.
 
+## 📹 Demo Video
+
+[![MEAN App Demo](https://img.shields.io/badge/Watch-Demo%20Video-red?style=for-the-badge&logo=youtube)](./screenshots/2026-02-24%2013-57-07.mkv)
+
+*Click above to watch the complete demonstration of the application deployment and features.*
+
+> **Note**: Download the video file from `screenshots/2026-02-24 13-57-07.mkv` to view the full demo.
+
 ## Table of Contents
 
 - [Overview](#overview)
